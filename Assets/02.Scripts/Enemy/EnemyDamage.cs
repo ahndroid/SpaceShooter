@@ -30,12 +30,19 @@ public class EnemyDamage : MonoBehaviour {
 		
 		bloodEffect = Resources.Load<GameObject>("BulletImpactFleshBigEffect"); // resources 폴더를 루트로 하는 경로에서 찾음.
 
+		
 		SetHpBar();
 	}
 
     private void SetHpBar()
     {
-        throw new NotImplementedException();
+		uiCanvas = GameObject.Find("UI Canvas").GetComponent<Canvas>();
+        var hpBar = Instantiate<GameObject>(hpBarPrefab,uiCanvas.transform);
+		hpBarImage = hpBar.GetComponentsInChildren<Image>()[1];
+
+		var hpBarScript = hpBar.GetComponent<EnemyHpBar>();
+		hpBarScript.targetTr = this.gameObject.transform;
+		hpBarScript.offset = hpBarOffset;
     }
 
     // Update is called once per frame
@@ -52,6 +59,8 @@ public class EnemyDamage : MonoBehaviour {
 			
 			//Destroy(coll.gameObject);//총알 삭제
 
+			hpBarImage.fillAmount = hp /initHp;
+
 			coll.gameObject.SetActive(false); //총알 풀로 반환
 
 			
@@ -59,6 +68,8 @@ public class EnemyDamage : MonoBehaviour {
 			if (hp <=0.0f)
 			{
 				GetComponent<EnemyAI>().state=EnemyAI.State.DIE;
+				//죽었으면 생명바도 안보이게..
+				hpBarImage.GetComponentsInParent<Image>()[1].color = Color.clear;
 			}
 		}
 	}

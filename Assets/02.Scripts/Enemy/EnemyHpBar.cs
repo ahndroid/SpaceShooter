@@ -17,13 +17,13 @@ public class EnemyHpBar : MonoBehaviour {
 
 	[HideInInspector]
 	public Vector3 offset = Vector3.zero; //위치 조절 오프셋
-	[HideInInspector]	
+	
 	public Transform targetTr; //대상의 Tr
 
 	// Use this for initialization
 	void Start () {
 		
-		canvas = GetComponent<Canvas>();
+		canvas = GetComponentInParent<Canvas>();
 		uiCamera = canvas.worldCamera;
 		rectParent = canvas.GetComponent<RectTransform>();
 		rectHp = this.gameObject.GetComponent<RectTransform>();
