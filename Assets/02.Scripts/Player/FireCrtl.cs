@@ -50,6 +50,13 @@ public class FireCrtl : MonoBehaviour {
 	public WeaponType currentWeapon = WeaponType.RIFLE;
 
 	private Shake shake;
+
+	//변경할 무기 이미지
+	public Sprite[] weaponIcons;
+
+	//변경할 무기 이미지 UI
+	public Image weaponImage;
+
 	private void Start() {
 		muzzleFlash = firePos.GetComponentInChildren<ParticleSystem>();
 		fireCtrAudio = GetComponent<AudioSource>();
@@ -58,6 +65,9 @@ public class FireCrtl : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
+
+
+		if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return; //UI 버튼 클릭인 경우 총을 쏘지 않는다.
 		
 		if (!isReloading && Input.GetMouseButtonDown(0))
 		{
@@ -127,6 +137,12 @@ public class FireCrtl : MonoBehaviour {
         var sfx = playSfx.fire[(int)currentWeapon];
 		fireCtrAudio.PlayOneShot(sfx,1.0f);
     }
+
+	public void OnChangeWeapon()
+	{
+		currentWeapon =(WeaponType)((int) ++currentWeapon % 2);
+		weaponImage.sprite = weaponIcons[(int)currentWeapon];
+	}
 }
 
 [System.Serializable]

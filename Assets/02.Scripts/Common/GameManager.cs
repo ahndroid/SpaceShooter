@@ -111,4 +111,37 @@ public class GameManager : MonoBehaviour {
 
 		//return bullet;
 	}
+
+
+	private bool isPaused = false;
+
+	public void OnPauseClick(Text senderText)
+	{
+		isPaused = !isPaused;
+
+		if (isPaused) 
+			senderText.text = ">>";
+		else
+		{
+			senderText.text = "||";
+		}
+
+		Time.timeScale = (isPaused) ? 0.0f:1.0f; // timeScale 이 0 이면 정지, 1이면 정상속도
+
+		//유저 액션에 반응하는 스크립트를 모두 찾아 비활성/활성화 처리
+		var playerObj = GameObject.FindGameObjectWithTag("PLAYER");
+
+		var scripts = playerObj.GetComponents<MonoBehaviour>();
+
+		foreach(var script in scripts)
+		{
+			script.enabled = !isPaused;
+		}
+
+		//정지되면 무시 선택버튼을 비활성하기
+		var canvasGroup = GameObject.Find("Panel-Weapon").GetComponent<CanvasGroup>();
+		canvasGroup.blocksRaycasts = !isPaused;
+
+
+	}
 }
