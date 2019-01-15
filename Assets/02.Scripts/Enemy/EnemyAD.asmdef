@@ -1,7 +1,8 @@
 {
     "name": "EnemyAD",
     "references": [
-        "Player"
+        "Player",
+        "CommonAD"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

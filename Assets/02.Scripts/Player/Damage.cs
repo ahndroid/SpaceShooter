@@ -28,6 +28,7 @@ public class Damage : MonoBehaviour {
 
 	void Start () {
 		
+		initHp = GameManager.instance.gameData.hp;
 		currHp = initHp;
 
 		hpBar.color = initColor;

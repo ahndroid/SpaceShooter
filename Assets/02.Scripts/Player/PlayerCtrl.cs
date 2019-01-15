@@ -27,6 +27,8 @@ public class PlayerCtrl : MonoBehaviour {
 		anim = GetComponent<Animation>();
 		anim.clip = playerAnim.idle;
 		anim.Play();
+
+		moveSpeed = GameManager.instance.gameData.speed;
 	}
 	
 	// Update is called once per frame

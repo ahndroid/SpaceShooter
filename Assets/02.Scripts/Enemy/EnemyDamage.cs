@@ -70,6 +70,10 @@ public class EnemyDamage : MonoBehaviour {
 				GetComponent<EnemyAI>().state=EnemyAI.State.DIE;
 				//죽었으면 생명바도 안보이게..
 				hpBarImage.GetComponentsInParent<Image>()[1].color = Color.clear;
+
+				GameManager.instance.IncreaseKillCount();
+
+				GetComponent<CapsuleCollider>().enabled = false;
 			}
 		}
 	}

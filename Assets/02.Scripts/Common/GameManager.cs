@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using DataInfo;
 
 public class GameManager : MonoBehaviour {
 
@@ -30,6 +31,19 @@ public class GameManager : MonoBehaviour {
 
 	public List<GameObject> bulletPool = new List<GameObject>();
 
+	public CanvasGroup InventoryCanvasGroup;
+
+	// [HideInInspector]
+	// public int killCount;
+	[Header("GameData")]
+
+
+	public Text KillCountText; //킬카운트 보여줄 텍스트
+
+	private DataManager dataManager;
+
+	public GameData gameData;
+
 	private void Awake() {
 		if (instance == null)
 		{
@@ -40,11 +54,36 @@ public class GameManager : MonoBehaviour {
 			Destroy(this.gameObject);
 		}
 
+		dataManager = GetComponent<DataManager>();
+		dataManager.Initialize();
+
 		DontDestroyOnLoad(this.gameObject); //다른 씬으로 넘어가더라도 겜오브젝트를 삭제하지 않음
 
 
 		CreatePooling();
 
+		LoadGameData();
+
+	}
+
+    private void LoadGameData()
+    {
+        // killCount = PlayerPrefs.GetInt("KILL_COUNT",0); //해당키가 없으면 기본값 0 리턴
+		// KillCountText.text ="Kill : "+ killCount.ToString("0000");
+
+		GameData data = dataManager.Load();
+
+		gameData = data;
+
+		KillCountText.text ="Kill : "+ gameData.killCount.ToString("0000");
+    }
+
+	public void IncreaseKillCount()
+	{
+		++gameData.killCount;
+		KillCountText.text = "Kill : "+gameData.killCount.ToString("0000");
+
+		//PlayerPrefs.SetInt("KILL_COUNT",killCount);
 	}
 
     private void CreatePooling()
@@ -65,6 +104,8 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start () {
+
+		OnInventoryOpen(false);
 		
 		points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
 
@@ -73,6 +114,11 @@ public class GameManager : MonoBehaviour {
 			StartCoroutine(CreateEnemy());
 		}
 	}
+
+    public void OnInventoryOpen(bool isOpened)
+    {
+        InventoryCanvasGroup.alpha = (isOpened) ? 1.0f:0.0f;
+    }
 
     private IEnumerator CreateEnemy()
     {
@@ -143,5 +189,14 @@ public class GameManager : MonoBehaviour {
 		canvasGroup.blocksRaycasts = !isPaused;
 
 
+	}
+
+	void SaveGameData()
+	{
+		dataManager.Save(gameData);
+	}
+
+	private void OnApplicationQuit() {
+		SaveGameData();
 	}
 }
