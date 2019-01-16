@@ -9,8 +9,10 @@ public class UIManager : MonoBehaviour {
 
 		Debug.Log("Clicked Start Button");
 
-		SceneManager.LoadScene("Level1");
-		SceneManager.LoadScene("Play",LoadSceneMode.Additive);
+		//SceneManager.LoadScene("Level1");
+		//SceneManager.LoadScene("Play",LoadSceneMode.Additive);
+
+		SceneManager.LoadScene("SceneLoader");
 	}
 
 
