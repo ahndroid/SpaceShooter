@@ -199,4 +199,114 @@ public class GameManager : MonoBehaviour {
 	private void OnApplicationQuit() {
 		SaveGameData();
 	}
+
+
+	public delegate void ItemChangeDelegate();
+	public static event ItemChangeDelegate OnItemChange;
+
+
+	public void AddItem(Item item)
+	{
+		if (gameData.equipItem.Contains(item)) return;
+
+		gameData.equipItem.Add(item);
+
+		switch(item.itemType)
+		{
+			case Item.ItemType.HP:
+
+				if (item.itemCalc == Item.ItemCalc.INC_VALUE)
+				{
+					gameData.hp += item.value;
+				}
+				else
+				{
+					gameData.hp += gameData.hp * item.value;
+				}
+				break;
+
+			case Item.ItemType.DAMAGE:
+
+				if (item.itemCalc == Item.ItemCalc.INC_VALUE)
+				{
+					gameData.damage += item.value;
+				}
+				else
+				{
+					gameData.damage += gameData.damage * item.value;
+				}
+				break;
+
+			case Item.ItemType.SPEED:
+
+				if (item.itemCalc == Item.ItemCalc.INC_VALUE)
+				{
+					gameData.speed += item.value;
+				}
+				else
+				{
+					gameData.speed += gameData.speed * item.value;
+				}
+				break;
+
+			default :
+				break;
+
+		}
+
+		OnItemChange();
+	}
+
+
+	public void RemoveIem(Item item)
+	{
+		if (!gameData.equipItem.Contains(item)) return;
+
+		gameData.equipItem.Remove(item);
+
+		switch(item.itemType)
+		{
+			case Item.ItemType.HP:
+
+				if (item.itemCalc == Item.ItemCalc.INC_VALUE)
+				{
+					gameData.hp -= item.value;
+				}
+				else
+				{
+					gameData.hp = gameData.hp /(1.0f+ item.value);
+				}
+				break;
+
+			case Item.ItemType.DAMAGE:
+
+				if (item.itemCalc == Item.ItemCalc.INC_VALUE)
+				{
+					gameData.damage -= item.value;
+				}
+				else
+				{
+					gameData.damage = gameData.damage / (1.0f +item.value);
+				}
+				break;
+
+			case Item.ItemType.SPEED:
+
+				if (item.itemCalc == Item.ItemCalc.INC_VALUE)
+				{
+					gameData.speed -= item.value;
+				}
+				else
+				{
+					gameData.speed = gameData.speed / (1.0f+ item.value);
+				}
+				break;
+
+			default :
+				break;
+
+		}
+
+		OnItemChange();
+	}
 }

@@ -66,6 +66,7 @@ public class FireCrtl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		Debug.DrawRay(firePos.position,firePos.forward * 20.0f,Color.red);
 
 		if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return; //UI 버튼 클릭인 경우 총을 쏘지 않는다.
 		

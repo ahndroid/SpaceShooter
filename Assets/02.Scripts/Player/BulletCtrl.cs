@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,10 +40,16 @@ public class BulletCtrl : MonoBehaviour {
 
 	private void OnEnable() {
 		rb.AddForce(transform.forward * speed);
+
+		GameManager.OnItemChange += UpdateSetup;
 	}
 
+    private void UpdateSetup()
+    {
+        damage = GameManager.instance.gameData.damage;
+    }
 
-	private void OnDisable() {
+    private void OnDisable() {
 		
 		trail.Clear();
 		tr.position = Vector3.zero;

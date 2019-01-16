@@ -26,7 +26,17 @@ public class Damage : MonoBehaviour {
 
 	private Color currHpBarColor; //현재 생명바 색상
 
-	void Start () {
+	private void OnEnable() {
+		GameManager.OnItemChange +=UpdateSetup;
+	}
+
+    private void UpdateSetup()
+    {
+        initHp = GameManager.instance.gameData.hp;
+		currHp += GameManager.instance.gameData.hp - currHp;
+    }
+
+    void Start () {
 		
 		initHp = GameManager.instance.gameData.hp;
 		currHp = initHp;

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,7 +22,18 @@ public class PlayerCtrl : MonoBehaviour {
 	public PlayerAnimation playerAnim;
 
 	public Animation anim;
-	void Start () {
+
+
+	private void OnEnable() {
+		GameManager.OnItemChange +=UpdateSetup;
+	}
+
+    private void UpdateSetup()
+    {
+        moveSpeed = GameManager.instance.gameData.speed;
+    }
+
+    void Start () {
 		
 		tr = GetComponent<Transform>();
 		anim = GetComponent<Animation>();
